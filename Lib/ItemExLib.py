@@ -6,8 +6,7 @@ __version__ = "0.9.5"
 
 from BrawlCrate.API import *	# BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
-from BrawlCrate.UI import MainForm
-from BrawlLib import * # Imaging
+
 
 # ItmFreqEntryNode list, as:
 # (Item ID, SubItem ID, Minimum, Maximum, Frequency)
@@ -83,7 +82,7 @@ def isCommonItem(itemId):
 	return itemId < 0x46 or itemId == 0x4f or (itemId >= 0x53 and itemId < 0x62)
 
 def isContainer(itemId):
-	return itemId == 0x03 or itemId == 0x07 or itemId == 0x0A or itemId == 0x22 or itemId == 0x09
+	return itemId in [0x03, 0x07, 0x09, 0x0A, 0x22]
 
 def getContainerVariation(freqNodes):
 	for freqNode in freqNodes:

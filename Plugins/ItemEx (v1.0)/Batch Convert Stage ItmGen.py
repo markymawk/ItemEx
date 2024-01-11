@@ -1,14 +1,12 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.2"
+__version__ = "0.9.3"
 
 from BrawlCrate.API import BrawlAPI
-from System.IO import *
-from BrawlLib.Internal import *
-from BrawlCrate.UI import *
-from BrawlLib.Internal.Windows.Forms import *
-from BrawlCrate.NodeWrappers import *
-from BrawlCrate.API.BrawlAPI import AppPath
 from BrawlLib.SSBB.ResourceNodes import *
+from BrawlLib.Internal import *
+from BrawlLib.Internal.Windows.Forms import *
+from BrawlCrate.UI import *
+from System.IO import *
 from ItemExLib import *
 
 SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
