@@ -369,7 +369,7 @@ def isCommonItem(itemId):
 	return itemId < 0x46 or itemId == 0x4f or (itemId >= 0x53 and itemId < 0x62)
 
 def isContainer(itemId):
-	return itemId == 0x03 or itemId == 0x07 or itemId == 0x0A or itemId == 0x22 or itemId == 0x09:
+	return itemId == 0x03 or itemId == 0x07 or itemId == 0x0A or itemId == 0x22 or itemId == 0x09
 
 def getContainerVariation(freqNodes):
 	for freqNode in freqNodes:
