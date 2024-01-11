@@ -1,5 +1,6 @@
 ﻿__author__ = "Kapedani, mawwwk"
-version = "1.0"
+__version__ = "0.9.5"
+
 # ItemEx lib
 # Conversion function and data library for updating ItemGen nodes
 
@@ -95,28 +96,30 @@ def getContainerVariation(freqNodes):
 
 # Main ItemGen update function 
 def updateItmTableGroupNode(groupNode):
-	if groupNode.Id == 10000:
-		itmFreqEntryNodes = []
+	if groupNode.Id != 10000:
+		return
+	
+	itmFreqEntryNodes = []
+	
+	# Generate list of ItemFreqEntry nodes for common (vBrawl) items
+	for freqNode in groupNode.Children:
+		if isCommonItem(freqNode.ItemID):
+			itmFreqEntryNodes.append(freqNode)
+	
+	# Remove all common ItemFreqEntry nodes
+	for freqNode in itmFreqEntryNodes:
+		freqNode.Remove()
+	
+	# Create new item freq entry nodes
+	for itemFreq in ITEM_LIST:
+		freqNode = ItmFreqEntryNode()
+		freqNode.ItemID = itemFreq[0]
+		freqNode.SubID = itemFreq[1]
+		freqNode.Minimum = itemFreq[2]
+		freqNode.Maximum = itemFreq[3]
+		freqNode.Frequency = itemFreq[4]
+		groupNode.AddChild(freqNode)
 		
-		# Generate list of ItemFreqEntry nodes for common (vBrawl) items
-		for freqNode in groupNode.Children:
-			if isCommonItem(freqNode.ItemID):
-				itmFreqEntryNodes.append(freqNode)
-		
-		# Remove all common ItemFreqEntry nodes
-		for freqNode in itmFreqEntryNodes:
-			freqNode.Remove()
-		
-		# Create new item freq entry nodes
-		for itemFreq in ITEM_LIST:
-			freqNode = ItmFreqEntryNode()
-			freqNode.ItemID = itemFreq[0]
-			freqNode.SubID = itemFreq[1]
-			freqNode.Minimum = itemFreq[2]
-			freqNode.Maximum = itemFreq[3]
-			freqNode.Frequency = itemFreq[4]
-			groupNode.AddChild(freqNode)
-			
-			# Add container variation data
-			if isContainer(itemFreq[0]):
-				freqNode.SubID += getContainerVariation(groupNode.Children)
+		# Add container variation data
+		if isContainer(itemFreq[0]):
+			freqNode.SubID += getContainerVariation(groupNode.Children)
