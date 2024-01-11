@@ -408,7 +408,7 @@ def main():
 	
 	# Loop through pac files
 	for file in files:
-		if Path.GetFileName(file) not in files_to_skip:
+		if Path.GetFileName(file) not in files_to_skip and Path.GetFileName(file).endswith(".pac"):
 			progressBar.Caption = Path.GetFileName(file);
 			fileOpened = BrawlAPI.OpenFile(file)
 			if fileOpened:
@@ -417,7 +417,7 @@ def main():
 					if node.Id == 10000:
 						containerVariation = getContainerVariation(node.Children)
 						itmFreqEntryNodes = []
-
+						
 						for freqNode in node.Children:
 							if isCommonItem(freqNode.ItemID):
 								itmFreqEntryNodes.append(freqNode)
