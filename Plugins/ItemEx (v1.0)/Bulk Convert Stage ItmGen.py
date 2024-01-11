@@ -1,5 +1,5 @@
-__author__ = "Kapedani"
-__version__ = "0.9"
+__author__ = "Kapedani, mawwwk"
+__version__ = "0.9.1"
 
 #from enum import Enum
 from BrawlCrate.API import BrawlAPI
@@ -366,14 +366,10 @@ item_freqs = [(0x00, 5000, 1, 1, 24.0),
 			  (0x37, 5000, 1, 1, 150.0)]
 
 def isCommonItem(itemId):
-	if itemId < 0x46 or itemId == 0x4f or (itemId >= 0x53 and itemId < 0x62):
-		return True
-	return False
+	return itemId < 0x46 or itemId == 0x4f or (itemId >= 0x53 and itemId < 0x62)
 
 def isContainer(itemId):
-	if itemId == 0x03 or itemId == 0x07 or itemId == 0x0A or itemId == 0x22 or itemId == 0x09:
-		return True
-	return False
+	return itemId == 0x03 or itemId == 0x07 or itemId == 0x0A or itemId == 0x22 or itemId == 0x09:
 
 def getContainerVariation(freqNodes):
 	for freqNode in freqNodes:
@@ -385,67 +381,66 @@ def getContainerVariation(freqNodes):
 	return 0
 
 def main():
-		# Set up progressbar
-		progressCounter = 0
+	isBuildPathSet = False
+	# If build path is set, confirm intended dir
+	if MainForm.BuildPath != '':
+		meleeDir = MainForm.BuildPath + '/pf/stage/melee'
+		isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.","Update Stage ItmGens")
+	
+	# If build path not set, or previous prompt denied, prompt for new directory
+	if not isBuildPathSet:
+		meleeDir = BrawlAPI.OpenFolderDialog()
+		# Quit if canceled
+		if meleeDir == '':
+			return
 		
-		isBuildPathSet = False
-		# If build path is set, confirm intended dir
-		if MainForm.BuildPath != '':
-			meleeDir = MainForm.BuildPath + '/pf/stage/melee'
-			isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.","Update Stage ItmGens")
-		
-		# If build path not set, or previous prompt denied, prompt for new directory
-		if not isBuildPathSet:
-			meleeDir = BrawlAPI.OpenFolderDialog()
-			# Quit if canceled
-			if meleeDir == '':
-				return
-			
-			# Final confirmation prompt
-			if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?","Update Stage ItmGens"):
-				return
-		
-		files = Directory.GetFiles(meleeDir)
+		# Final confirmation prompt
+		if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?","Update Stage ItmGens"):
+			return
+	
+	files = Directory.GetFiles(meleeDir)
 
-		totalNodes = len(files)
-		progressBar = ProgressWindow(MainForm.Instance, "Updating", "Preparing Stage ItmGens", False)
-		progressBar.Begin(0, totalNodes, progressCounter)
-		for file in files:
-			if Path.GetFileName(file) not in files_to_skip:
-				progressBar.Caption = Path.GetFileName(file);
-				fileOpened = BrawlAPI.OpenFile(file)
-				if fileOpened:
-					nodes = BrawlAPI.RootNode.GetChildrenRecursive()
-					for node in nodes:
-						if node.NodeType == "BrawlLib.SSBB.ResourceNodes.ItmTableGroupNode":
-							if node.Id == 10000:
-								containerVariation = getContainerVariation(node.Children)
+	# Set up progress bar
+	progressCounter = 0
+	nodeCount = len(files)
+	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Preparing Stage ItmGens", False)
+	progressBar.Begin(0, nodeCount, progressCounter)
+	
+	# Loop through pac files
+	for file in files:
+		if Path.GetFileName(file) not in files_to_skip:
+			progressBar.Caption = Path.GetFileName(file);
+			fileOpened = BrawlAPI.OpenFile(file)
+			if fileOpened:
+				nodes = BrawlAPI.NodeListOfType[ItmTableGroupNode]()
+				for node in nodes:
+					if node.Id == 10000:
+						containerVariation = getContainerVariation(node.Children)
+						itmFreqEntryNodes = []
 
-								itmFreqEntryNodes = []
+						for freqNode in node.Children:
+							if isCommonItem(freqNode.ItemID):
+								itmFreqEntryNodes.append(freqNode)
+						for freqNode in itmFreqEntryNodes:
+							freqNode.Remove()
 
-								for freqNode in node.Children:
-									if isCommonItem(freqNode.ItemID):
-										itmFreqEntryNodes.append(freqNode)
-								for freqNode in itmFreqEntryNodes:
-									freqNode.Remove()
-
-								for item_freq in item_freqs:
-									freqNode = ItmFreqEntryNode()
-									freqNode.ItemID = item_freq[0]
-									freqNode.SubID = item_freq[1]
-									if isContainer(item_freq[0]):
-										freqNode.SubID += containerVariation
-									freqNode.Minimum = item_freq[2]
-									freqNode.Maximum = item_freq[3]
-									freqNode.Frequency = item_freq[4]
-									node.AddChild(freqNode)
-
-					BrawlAPI.SaveFile()
-					BrawlAPI.ForceCloseFile()
-			progressCounter += 1
-			progressBar.Update(progressCounter)
-		progressBar.Finish()
-		BrawlAPI.ShowMessage("Finished preparing ItmGens.", "Finished")
+						for item_freq in item_freqs:
+							freqNode = ItmFreqEntryNode()
+							freqNode.ItemID = item_freq[0]
+							freqNode.SubID = item_freq[1]
+							if isContainer(item_freq[0]):
+								freqNode.SubID += containerVariation
+							freqNode.Minimum = item_freq[2]
+							freqNode.Maximum = item_freq[3]
+							freqNode.Frequency = item_freq[4]
+							node.AddChild(freqNode)
+	
+				BrawlAPI.SaveFile()
+				BrawlAPI.ForceCloseFile()
+		progressCounter += 1
+		progressBar.Update(progressCounter)
+	progressBar.Finish()
+	BrawlAPI.ShowMessage("Finished preparing ItmGens.", "Finished")
 
 
 main()
