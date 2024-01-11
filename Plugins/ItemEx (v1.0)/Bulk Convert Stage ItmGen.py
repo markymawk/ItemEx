@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.1"
+__version__ = "0.9.2"
 
 from BrawlCrate.API import BrawlAPI
 from System.IO import *
@@ -10,8 +10,8 @@ from BrawlCrate.NodeWrappers import *
 from BrawlCrate.API.BrawlAPI import AppPath
 from BrawlLib.SSBB.ResourceNodes import *
 
-SCRIPT_NAME = "Convert Stage ItemGen Data"
-
+SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
+ITEMEX_VERSION = "v1.0"
 files_to_skip = [""]
 
 # ItmFreqEntryNode list, as:
@@ -32,7 +32,7 @@ item_freqs = [
 	(0x22, 6, 1, 1, 25.0),		# Party Ball
 	(0x22, 12, 1, 1, 3.0),		# Party Ball
 	(0x22, 18, 1, 1, 3.0),		# Party Ball
-	(0x2a, 5000, 1, 1, 50.0),	# Pokéball
+	(0x2a, 5000, 1, 1, 50.0),	# Pokeball
 	(0x31, 5000, 1, 1, 7.0),	# Sandbag
 	(0x20, 5000, 1, 1, 3.0),	# Heart Container
 	(0x24, 5000, 1, 1, 7.0),	# Maxim Tomato
@@ -99,11 +99,18 @@ def getContainerVariation(freqNodes):
 	return 0
 
 def main():
+	# Show starting info prompt
+	startMsg = "Automatically update stage item generation data (ItemGen) to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
+	"NOTE: Converted stages may no longer be compatible with non-ItemEx builds. This process is irreversible!\n\n" + \
+	"Press OK to continue to folder selection."
+	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
+		return
+	
 	isBuildPathSet = False
 	# If build path is set, confirm intended dir
 	if MainForm.BuildPath != '':
-		meleeDir = MainForm.BuildPath + '/pf/stage/melee'
-		isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.", SCRIPT_NAME)
+		meleeDir = MainForm.BuildPath + '\\pf\\stage\\melee\\'
+		isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Default build path detected.\n\nUpdate all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.", SCRIPT_NAME)
 	
 	# If build path not set, or previous prompt denied, prompt for new directory
 	if not isBuildPathSet:
@@ -171,6 +178,8 @@ def main():
 		# Update progress bar
 		progressCounter += 1
 		progressBar.Update(progressCounter)
+	
+	# Results
 	progressBar.Finish()
 	BrawlAPI.ShowMessage("Finished converting ItemGen data!", SCRIPT_NAME)
 
