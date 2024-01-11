@@ -115,12 +115,11 @@ def main():
 		# Final confirmation prompt
 		if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?", SCRIPT_NAME):
 			return
-	
-	files = Directory.GetFiles(meleeDir)
 
-	# Set up progress bar
-	progressCounter = 0
+	# Initialize file list and progress bar
+	files = Directory.GetFiles(meleeDir)
 	fileCount = len(files)
+	progressCounter = 0
 	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Converting stage ItemGen data", False)
 	progressBar.Begin(0, fileCount, progressCounter)
 	
@@ -152,17 +151,19 @@ def main():
 				for freqNode in itmFreqEntryNodes:
 					freqNode.Remove()
 				
-				# Create new item freq nodes
+				# Create new item freq entry nodes
 				for item_freq in item_freqs:
 					freqNode = ItmFreqEntryNode()
 					freqNode.ItemID = item_freq[0]
 					freqNode.SubID = item_freq[1]
-					if isContainer(item_freq[0]):
-						freqNode.SubID += getContainerVariation(groupNode.Children)
 					freqNode.Minimum = item_freq[2]
 					freqNode.Maximum = item_freq[3]
 					freqNode.Frequency = item_freq[4]
 					groupNode.AddChild(freqNode)
+					
+					# Add container variation data
+					if isContainer(item_freq[0]):
+						freqNode.SubID += getContainerVariation(groupNode.Children)
 	
 		BrawlAPI.SaveFile()
 		BrawlAPI.ForceCloseFile()
