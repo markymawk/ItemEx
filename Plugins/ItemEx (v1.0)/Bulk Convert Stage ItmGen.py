@@ -11,6 +11,7 @@ from BrawlCrate.NodeWrappers import *
 from BrawlCrate.API.BrawlAPI import AppPath
 from BrawlLib.SSBB.ResourceNodes import *
 
+SCRIPT_NAME = "Convert Stage ItemGen Data"
 # class Item(Enum):
 # 	Common = -0x3
 # 	AssistTrophy = 0x00
@@ -300,6 +301,8 @@ from BrawlLib.SSBB.ResourceNodes import *
 
 files_to_skip = [""]
 
+# ItmFreqEntryNode list, as:
+# (Item ID, SubItem ID, Minimum, Maximum, Frequency)
 item_freqs = [(0x00, 5000, 1, 1, 24.0),
 			  (0x03, 6, 1, 1, 27.0),
 			  (0x03, 12, 1, 1, 4.0),
@@ -385,7 +388,7 @@ def main():
 	# If build path is set, confirm intended dir
 	if MainForm.BuildPath != '':
 		meleeDir = MainForm.BuildPath + '/pf/stage/melee'
-		isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.","Update Stage ItmGens")
+		isBuildPathSet = BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?\n\nSelect No to choose a different folder.", SCRIPT_NAME)
 	
 	# If build path not set, or previous prompt denied, prompt for new directory
 	if not isBuildPathSet:
@@ -395,7 +398,7 @@ def main():
 			return
 		
 		# Final confirmation prompt
-		if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?","Update Stage ItmGens"):
+		if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?", SCRIPT_NAME):
 			return
 	
 	files = Directory.GetFiles(meleeDir)
@@ -403,7 +406,7 @@ def main():
 	# Set up progress bar
 	progressCounter = 0
 	fileCount = len(files)
-	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Preparing Stage ItmGens", False)
+	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Converting stage ItemGen data", False)
 	progressBar.Begin(0, fileCount, progressCounter)
 	
 	# Loop through pac files
@@ -421,12 +424,12 @@ def main():
 			continue
 		
 		# Loop through ItmTableGroup nodes in current pac
-		for node in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
-			if node.Id == 10000:
+		for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
+			if groupNode.Id == 10000:
 				itmFreqEntryNodes = []
 				
 				# Generate list of ItemFreqEntry nodes for common (vBrawl) items
-				for freqNode in node.Children:
+				for freqNode in groupNode.Children:
 					if isCommonItem(freqNode.ItemID):
 						itmFreqEntryNodes.append(freqNode)
 				
@@ -440,11 +443,11 @@ def main():
 					freqNode.ItemID = item_freq[0]
 					freqNode.SubID = item_freq[1]
 					if isContainer(item_freq[0]):
-						freqNode.SubID += getContainerVariation(node.Children)
+						freqNode.SubID += getContainerVariation(groupNode.Children)
 					freqNode.Minimum = item_freq[2]
 					freqNode.Maximum = item_freq[3]
 					freqNode.Frequency = item_freq[4]
-					node.AddChild(freqNode)
+					groupNode.AddChild(freqNode)
 	
 		BrawlAPI.SaveFile()
 		BrawlAPI.ForceCloseFile()
@@ -452,6 +455,6 @@ def main():
 		progressCounter += 1
 		progressBar.Update(progressCounter)
 	progressBar.Finish()
-	BrawlAPI.ShowMessage("Finished converting ItmGens.", "Finished")
+	BrawlAPI.ShowMessage("Finished converting ItemGen data!", SCRIPT_NAME)
 
 main()
