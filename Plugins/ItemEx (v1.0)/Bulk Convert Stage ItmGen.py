@@ -128,7 +128,7 @@ def main():
 	for file in files:
 		
 		# Check whether file should be opened
-		if Path.GetFileName(file) in files_to_skip or Path.GetFileName(file).endswith(".pac"):
+		if Path.GetFileName(file) in files_to_skip or not Path.GetFileName(file).endswith(".pac"):
 			continue
 			
 		progressBar.Caption = Path.GetFileName(file)
