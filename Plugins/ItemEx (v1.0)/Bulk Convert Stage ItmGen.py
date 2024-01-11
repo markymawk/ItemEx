@@ -402,9 +402,9 @@ def main():
 
 	# Set up progress bar
 	progressCounter = 0
-	nodeCount = len(files)
+	fileCount = len(files)
 	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Preparing Stage ItmGens", False)
-	progressBar.Begin(0, nodeCount, progressCounter)
+	progressBar.Begin(0, fileCount, progressCounter)
 	
 	# Loop through pac files
 	for file in files:
@@ -412,18 +412,22 @@ def main():
 			progressBar.Caption = Path.GetFileName(file);
 			fileOpened = BrawlAPI.OpenFile(file)
 			if fileOpened:
-				nodes = BrawlAPI.NodeListOfType[ItmTableGroupNode]()
-				for node in nodes:
+				ItmTableNodes = BrawlAPI.NodeListOfType[ItmTableGroupNode]()
+				for node in ItmTableNodes:
 					if node.Id == 10000:
 						containerVariation = getContainerVariation(node.Children)
 						itmFreqEntryNodes = []
 						
+						# Generate list of ItemFreqEntry nodes for common (vBrawl) items
 						for freqNode in node.Children:
 							if isCommonItem(freqNode.ItemID):
 								itmFreqEntryNodes.append(freqNode)
+						
+						# Remove all common ItemFreqEntry nodes
 						for freqNode in itmFreqEntryNodes:
 							freqNode.Remove()
-
+						
+						# Create new item freq nodes
 						for item_freq in item_freqs:
 							freqNode = ItmFreqEntryNode()
 							freqNode.ItemID = item_freq[0]
@@ -437,6 +441,7 @@ def main():
 	
 				BrawlAPI.SaveFile()
 				BrawlAPI.ForceCloseFile()
+		# Update progress bar
 		progressCounter += 1
 		progressBar.Update(progressCounter)
 	progressBar.Finish()
