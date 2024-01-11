@@ -408,44 +408,50 @@ def main():
 	
 	# Loop through pac files
 	for file in files:
-		if Path.GetFileName(file) not in files_to_skip and Path.GetFileName(file).endswith(".pac"):
-			progressBar.Caption = Path.GetFileName(file);
-			fileOpened = BrawlAPI.OpenFile(file)
-			if fileOpened:
-				ItmTableNodes = BrawlAPI.NodeListOfType[ItmTableGroupNode]()
-				for node in ItmTableNodes:
-					if node.Id == 10000:
-						containerVariation = getContainerVariation(node.Children)
-						itmFreqEntryNodes = []
-						
-						# Generate list of ItemFreqEntry nodes for common (vBrawl) items
-						for freqNode in node.Children:
-							if isCommonItem(freqNode.ItemID):
-								itmFreqEntryNodes.append(freqNode)
-						
-						# Remove all common ItemFreqEntry nodes
-						for freqNode in itmFreqEntryNodes:
-							freqNode.Remove()
-						
-						# Create new item freq nodes
-						for item_freq in item_freqs:
-							freqNode = ItmFreqEntryNode()
-							freqNode.ItemID = item_freq[0]
-							freqNode.SubID = item_freq[1]
-							if isContainer(item_freq[0]):
-								freqNode.SubID += containerVariation
-							freqNode.Minimum = item_freq[2]
-							freqNode.Maximum = item_freq[3]
-							freqNode.Frequency = item_freq[4]
-							node.AddChild(freqNode)
+		
+		# Check whether file should be opened
+		if Path.GetFileName(file) in files_to_skip or Path.GetFileName(file).endswith(".pac"):
+			continue
+			
+		progressBar.Caption = Path.GetFileName(file)
+		
+		# Open file
+		fileOpened = BrawlAPI.OpenFile(file)
+		if not fileOpened:
+			continue
+		
+		# Loop through ItmTableGroup nodes in current pac
+		for node in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
+			if node.Id == 10000:
+				itmFreqEntryNodes = []
+				
+				# Generate list of ItemFreqEntry nodes for common (vBrawl) items
+				for freqNode in node.Children:
+					if isCommonItem(freqNode.ItemID):
+						itmFreqEntryNodes.append(freqNode)
+				
+				# Remove all common ItemFreqEntry nodes
+				for freqNode in itmFreqEntryNodes:
+					freqNode.Remove()
+				
+				# Create new item freq nodes
+				for item_freq in item_freqs:
+					freqNode = ItmFreqEntryNode()
+					freqNode.ItemID = item_freq[0]
+					freqNode.SubID = item_freq[1]
+					if isContainer(item_freq[0]):
+						freqNode.SubID += getContainerVariation(node.Children)
+					freqNode.Minimum = item_freq[2]
+					freqNode.Maximum = item_freq[3]
+					freqNode.Frequency = item_freq[4]
+					node.AddChild(freqNode)
 	
-				BrawlAPI.SaveFile()
-				BrawlAPI.ForceCloseFile()
+		BrawlAPI.SaveFile()
+		BrawlAPI.ForceCloseFile()
 		# Update progress bar
 		progressCounter += 1
 		progressBar.Update(progressCounter)
 	progressBar.Finish()
-	BrawlAPI.ShowMessage("Finished preparing ItmGens.", "Finished")
-
+	BrawlAPI.ShowMessage("Finished converting ItmGens.", "Finished")
 
 main()
