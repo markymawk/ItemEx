@@ -9,8 +9,9 @@ from BrawlCrate.UI import *
 from System.IO import *
 from ItemExLib import *
 
+SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
 ITEMEX_VERSION = "v1.0"
-SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
+# Enter file names to skip over, i.e. STGEXAMPLE.pac
 files_to_skip = [""]
 
 def main():
@@ -49,7 +50,7 @@ def main():
 	for file in files:
 		
 		# Check whether file should be opened
-		if Path.GetFileName(file) in files_to_skip or not Path.GetFileName(file).endswith(".pac"):
+		if Path.GetFileName(file) in files_to_skip or not Path.GetFileName(file).lower().endswith(".pac"):
 			continue
 		
 		progressBar.Caption = Path.GetFileName(file)
