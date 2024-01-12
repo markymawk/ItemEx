@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.3"
+__version__ = "0.9.4"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -34,8 +34,8 @@ def EnableCheck_ItmGenARC(sender, event_args):
 	node = BrawlAPI.SelectedNode
 	
 	sender.Enabled = (node is not None \
-	and node.Children \
 	and node.FileIndex == 10000 \
+	and node.Children \
 	and "ItmFreqNode" in node.Children[0].NodeType \
 	and BrawlAPI.RootNode.FilePath.endswith(".pac"))
 ## End enable check function
@@ -45,21 +45,36 @@ def EnableCheck_ItmGenARC(sender, event_args):
 def convert_stage_itemgen_rootARC(sender, event_args):
 	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
 		return
+		
+	updatedNodes = [] # ItmGen ARC nodes updated
 	
 	for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
+		updatedNodes.append(groupNode.Parent.Parent.Parent) # Store ARC node
 		updateItmTableGroupNode(groupNode)
 	
-	BrawlAPI.ShowMessage("Stage ItemGen data updated!", SCRIPT_NAME)
-	
+	# Results
+	if len(updatedNodes):
+		BrawlAPI.ShowMessage("ItemGen data updated!\n\n" + nodeListToString(list(set(updatedNodes))), SCRIPT_NAME)
+	# If no nodes updated
+	else:
+		BrawlAPI.ShowError("No ItmTableGroup nodes found in the current file.", "Error")
+
 def convert_stage_itemgen_ItmGenARC(sender, event_args):
 	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
 		return
+		
+	isUpdated = False
 	
 	for child in BrawlAPI.SelectedNode.GetChildrenRecursive():
 		if "ItmTableGroupNode" in child.NodeType:
+			isUpdated = True
 			updateItmTableGroupNode(child)
 	
-	BrawlAPI.ShowMessage("Stage ItemGen data updated!", SCRIPT_NAME)
+	if isUpdated:
+		BrawlAPI.ShowMessage(BrawlAPI.SelectedNode.Name + " data updated!", SCRIPT_NAME)
+	else:
+		BrawlAPI.ShowError("No ItmTableGroup data found in the selected ARC node.", "Error")
+
 ## End loader functions
 ## Start context menu add
 
