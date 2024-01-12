@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.3"
+__version__ = "0.9.5"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -9,8 +9,8 @@ from BrawlCrate.UI import *
 from System.IO import *
 from ItemExLib import *
 
-SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
 ITEMEX_VERSION = "v1.0"
+SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
 files_to_skip = [""]
 
 def main():

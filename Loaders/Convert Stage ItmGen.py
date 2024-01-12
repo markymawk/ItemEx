@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.4"
+__version__ = "0.9.5"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -12,8 +12,8 @@ from ItemExLib import *
 
 from System.Windows.Forms import ToolStripMenuItem
 
-SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
 ITEMEX_VERSION = "v1.0"
+SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
 
 OPTION_NAME = "Convert Stage ItemGen (ItemEx " + ITEMEX_VERSION + ")"
 
