@@ -93,6 +93,14 @@ def getContainerVariation(freqNodes):
 				return freqNode.SubID
 	return 0
 
+# Return a string containing the names of nodes inside the given list, one per line
+def nodeListToString(list):
+	message = ""
+	for item in list:
+		message += item.Name + "\n"
+	
+	return message
+
 # Main ItemGen update function 
 def updateItmTableGroupNode(groupNode):
 	if groupNode.Id != 10000:
