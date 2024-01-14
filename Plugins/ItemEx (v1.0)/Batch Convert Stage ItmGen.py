@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.5"
+__version__ = "0.9.6"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -42,6 +42,8 @@ def main():
 	# Initialize file list and progress bar
 	files = Directory.GetFiles(meleeDir)
 	progressCounter = 0
+	changedPacsCount = 0
+	notChangedPacsCount = 0
 	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Converting stage ItemGen data", False)
 	progressBar.Begin(0, len(files), progressCounter)
 	
@@ -58,11 +60,24 @@ def main():
 		
 		progressBar.Caption = Path.GetFileName(file)
 		
+		# Store item data lists to determine if anything was changed
+		oldItemList = []
+		newItemList = []
+		
 		# Loop through ItmTableGroup nodes in current pac
 		for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
-			updateItmTableGroupNode(groupNode)
-	
-		BrawlAPI.SaveFile()
+			update = updateItmTableGroupNode(groupNode, True)
+			if update:
+				oldItemList.append(update[0])
+				newItemList.append(update[1])
+		
+		# If item lists are the same, skip saving file to save time
+		if oldItemList == newItemList:
+			notChangedPacsCount += 1
+		else:
+			BrawlAPI.SaveFile()
+			changedPacsCount += 1
+		
 		BrawlAPI.ForceCloseFile()
 		
 		# Update progress bar
@@ -71,6 +86,9 @@ def main():
 	
 	# Results
 	progressBar.Finish()
-	BrawlAPI.ShowMessage("Finished converting ItemGen data!", SCRIPT_NAME)
+	RESULTS_MSG = "Finished converting ItemGen data!\n\n" + \
+	".pac files changed: " + str(changedPacsCount) + "\n" + \
+	".pac files unaffected: " + str(notChangedPacsCount)
+	BrawlAPI.ShowMessage(RESULTS_MSG, SCRIPT_NAME)
 
 main()
