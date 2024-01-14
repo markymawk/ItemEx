@@ -12,14 +12,14 @@ from ItemExLib import *
 SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
 ITEMEX_VERSION = "v1.0"
 # Enter file names to skip over, i.e. STGEXAMPLE.pac
-files_to_skip = [""]
+FILES_TO_SKIP = [""]
 
 def main():
 	# Show starting info prompt
-	startMsg = "Automatically update stage item generation data (ItemGen) to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
+	START_MSG = "Automatically update stage item generation data (ItemGen) to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
 	"NOTE: Converted stages may no longer be compatible with non-ItemEx builds. This process is irreversible!\n\n" + \
 	"Press OK to continue to folder selection."
-	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
+	if not BrawlAPI.ShowOKCancelPrompt(START_MSG, SCRIPT_NAME):
 		return
 	
 	isBuildPathSet = False
@@ -41,24 +41,22 @@ def main():
 
 	# Initialize file list and progress bar
 	files = Directory.GetFiles(meleeDir)
-	fileCount = len(files)
 	progressCounter = 0
 	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Converting stage ItemGen data", False)
-	progressBar.Begin(0, fileCount, progressCounter)
+	progressBar.Begin(0, len(files), progressCounter)
 	
 	# Loop through pac files
 	for file in files:
 		
 		# Check whether file should be opened
-		if Path.GetFileName(file) in files_to_skip or not Path.GetFileName(file).lower().endswith(".pac"):
+		if Path.GetFileName(file) in FILES_TO_SKIP or not Path.GetFileName(file).lower().endswith(".pac"):
+			continue
+		
+		# Open file
+		if not BrawlAPI.OpenFile(file):
 			continue
 		
 		progressBar.Caption = Path.GetFileName(file)
-		
-		# Open file
-		fileOpened = BrawlAPI.OpenFile(file)
-		if not fileOpened:
-			continue
 		
 		# Loop through ItmTableGroup nodes in current pac
 		for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
