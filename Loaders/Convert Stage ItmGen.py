@@ -22,6 +22,7 @@ startMsg = "Automatically update stage item generation (ItemGen) data to be comp
 "Press OK to continue."
 
 ## Start enable check function
+# Wrapper: ARCWrapper
 def EnableCheck_rootARC(sender, event_args):
 	node = BrawlAPI.SelectedNode
 	
@@ -30,6 +31,7 @@ def EnableCheck_rootARC(sender, event_args):
 	and node.FindChild("2") is not None \
 	and BrawlAPI.RootNode.FilePath.endswith(".pac"))
 
+# Wrapper: ARCWrapper
 def EnableCheck_ItmGenARC(sender, event_args):
 	node = BrawlAPI.SelectedNode
 	
@@ -38,8 +40,8 @@ def EnableCheck_ItmGenARC(sender, event_args):
 	and node.Children \
 	and "ItmFreqNode" in node.Children[0].NodeType \
 	and BrawlAPI.RootNode.FilePath.endswith(".pac"))
-## End enable check function
 
+## End enable check function
 ## Start loader functions
 
 def convert_stage_itemgen_rootARC(sender, event_args):
