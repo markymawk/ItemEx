@@ -17,8 +17,8 @@ SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
 
 OPTION_NAME = "Convert Stage ItemGen (ItemEx " + ITEMEX_VERSION + ")"
 
-startMsg = "Automatically update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
-"NOTE: Converted stages may no longer be compatible with non-ItemEx builds when items are enabled. This process is irreversible!\n\n" + \
+START_MSG = "Update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
+"NOTE: Converted stages may not be compatible with non-ItemEx builds when items are enabled.\n\n" + \
 "Press OK to continue."
 
 ## Start enable check function
@@ -45,7 +45,7 @@ def EnableCheck_ItmGenARC(sender, event_args):
 ## Start loader functions
 
 def convert_stage_itemgen_rootARC(sender, event_args):
-	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
+	if not BrawlAPI.ShowOKCancelPrompt(START_MSG, SCRIPT_NAME):
 		return
 		
 	updatedNodes = [] # ItmGen ARC nodes updated
@@ -62,7 +62,7 @@ def convert_stage_itemgen_rootARC(sender, event_args):
 		BrawlAPI.ShowError("No ItmTableGroup nodes found in the current file.", "Error")
 
 def convert_stage_itemgen_ItmGenARC(sender, event_args):
-	if not BrawlAPI.ShowOKCancelPrompt(startMsg, SCRIPT_NAME):
+	if not BrawlAPI.ShowOKCancelPrompt(START_MSG, SCRIPT_NAME):
 		return
 		
 	isUpdated = False
@@ -75,7 +75,7 @@ def convert_stage_itemgen_ItmGenARC(sender, event_args):
 	if isUpdated:
 		BrawlAPI.ShowMessage(BrawlAPI.SelectedNode.Name + " data updated!", SCRIPT_NAME)
 	else:
-		BrawlAPI.ShowError("No ItmTableGroup data found in the selected ARC node.", "Error")
+		BrawlAPI.ShowError("No ItmTableGroup nodes found inside the selected ARC.", "Error")
 
 ## End loader functions
 ## Start context menu add
