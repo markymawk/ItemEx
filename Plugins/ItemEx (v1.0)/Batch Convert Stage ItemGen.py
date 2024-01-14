@@ -16,8 +16,8 @@ FILES_TO_SKIP = [""]
 
 def main():
 	# Show starting info prompt
-	START_MSG = "Automatically update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
-	"NOTE: Converted stages may no longer be compatible with non-ItemEx builds when items are enabled. This process is irreversible!\n\n" + \
+	START_MSG = "Update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
+	"NOTE: Converted stages may not be compatible with non-ItemEx builds when items are enabled.\n\n" + \
 	"Press OK to continue to folder selection."
 	if not BrawlAPI.ShowOKCancelPrompt(START_MSG, SCRIPT_NAME):
 		return
@@ -36,7 +36,7 @@ def main():
 			return
 		
 		# Final confirmation prompt
-		if not BrawlAPI.ShowYesNoPrompt("Update all stage .pacs inside\n" + meleeDir + "?", SCRIPT_NAME):
+		if not BrawlAPI.ShowOKCancelPrompt("Updating all stage .pacs inside:\n" + meleeDir + "\n\nPress OK to continue.", SCRIPT_NAME):
 			return
 
 	# Initialize file list and progress bar
@@ -87,9 +87,12 @@ def main():
 	
 	# Results
 	progressBar.Finish()
-	RESULTS_MSG = "Finished converting ItemGen data!\n\n" + \
-	".pac files changed: " + str(changedPacsCount) + "\n" + \
-	".pac files unaffected: " + str(notChangedPacsCount)
+	RESULTS_MSG = "Finished converting ItemGen data!\n" + \
+	".pac files modified: " + str(changedPacsCount)
+	
+	if notChangedPacsCount:
+		RESULTS_MSG += "\n\nSome files already use updated ItemGen data.\n.pac files unmodified: " + str(notChangedPacsCount)
+	
 	BrawlAPI.ShowMessage(RESULTS_MSG, SCRIPT_NAME)
 
 main()
