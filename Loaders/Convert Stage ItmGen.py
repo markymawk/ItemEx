@@ -17,8 +17,8 @@ SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
 
 OPTION_NAME = "Convert Stage ItemGen (ItemEx " + ITEMEX_VERSION + ")"
 
-startMsg = "Automatically update stage item generation data (ItemGen) to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
-"NOTE: Converted stages may no longer be compatible with non-ItemEx builds. This process is irreversible!\n\n" + \
+startMsg = "Automatically update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
+"NOTE: Converted stages may no longer be compatible with non-ItemEx builds when items are enabled. This process is irreversible!\n\n" + \
 "Press OK to continue."
 
 ## Start enable check function
