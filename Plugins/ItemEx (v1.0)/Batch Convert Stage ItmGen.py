@@ -41,10 +41,10 @@ def main():
 
 	# Initialize file list and progress bar
 	files = Directory.GetFiles(meleeDir)
-	progressCounter = 0
 	changedPacsCount = 0
 	notChangedPacsCount = 0
 	progressBar = ProgressWindow(MainForm.Instance, "Updating", "Converting stage ItemGen data", False)
+	progressCounter = 0
 	progressBar.Begin(0, len(files), progressCounter)
 	
 	# Loop through pac files
@@ -54,22 +54,23 @@ def main():
 		if Path.GetFileName(file) in FILES_TO_SKIP or not Path.GetFileName(file).lower().endswith(".pac"):
 			continue
 		
-		# Open file
+		# Attempt to open file, but skip if unable to
 		if not BrawlAPI.OpenFile(file):
 			continue
 		
 		progressBar.Caption = Path.GetFileName(file)
 		
-		# Store item data lists to determine if anything was changed
+		# Initialize item data lists to later determine if anything was changed
 		oldItemList = []
 		newItemList = []
 		
 		# Loop through ItmTableGroup nodes in current pac
 		for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
-			update = updateItmTableGroupNode(groupNode, True)
-			if update:
-				oldItemList.append(update[0])
-				newItemList.append(update[1])
+			itemLists = updateItmTableGroupNode(groupNode, True)
+			# Populate item data lists
+			if itemLists:
+				oldItemList.append(itemLists[0])
+				newItemList.append(itemLists[1])
 		
 		# If item lists are the same, skip saving file to save time
 		if oldItemList == newItemList:
