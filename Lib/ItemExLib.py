@@ -1,12 +1,11 @@
 ﻿__author__ = "Kapedani, mawwwk"
-__version__ = "0.9.5"
+__version__ = "0.9.6"
 
 # ItemEx lib
 # Conversion function and data library for updating ItemGen nodes
 
 from BrawlCrate.API import *	# BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
-
 
 # ItmFreqEntryNode list, as:
 # (Item ID, SubItem ID, Minimum, Maximum, Frequency)
@@ -101,12 +100,29 @@ def nodeListToString(list):
 	
 	return message
 
+# Return a full list of data values in ItmTableGroupNode
+def storeItmFreqInfo(groupNode):
+	list = []
+	for child in groupNode.Children:
+		itemEntryData = []
+		itemEntryData.append(child.ItemID)
+		itemEntryData.append(child.SubID)
+		itemEntryData.append(child.Minimum)
+		itemEntryData.append(child.Maximum)
+		itemEntryData.append(child.Frequency)
+		list.append(itemEntryData)
+	return list
+
 # Main ItemGen update function 
-def updateItmTableGroupNode(groupNode):
+def updateItmTableGroupNode(groupNode, returnLists=False):
 	if groupNode.Id != 10000:
-		return
+		return False
 	
 	itmFreqEntryNodes = []
+	
+	# Store initial node MD5 checksums to determine if any get changed
+	if returnLists:
+		oldItemList = storeItmFreqInfo(groupNode)
 	
 	# Generate list of ItemFreqEntry nodes for common (vBrawl) items
 	for freqNode in groupNode.Children:
@@ -130,3 +146,9 @@ def updateItmTableGroupNode(groupNode):
 		# Add container variation data
 		if isContainer(itemFreq[0]):
 			freqNode.SubID += getContainerVariation(groupNode.Children)
+			
+	if returnLists:
+		newItemList = storeItmFreqInfo(groupNode)
+		
+		return [oldItemList, newItemList]
+	return True
