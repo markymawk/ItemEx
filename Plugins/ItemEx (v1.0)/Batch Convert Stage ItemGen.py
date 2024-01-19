@@ -89,10 +89,10 @@ def main():
 	# Results
 	progressBar.Finish()
 	RESULTS_MSG = "Finished converting ItemGen data!\n" + \
-	".pac files modified: " + str(changedPacsCount)
+	"Stage .pac files modified: " + str(changedPacsCount)
 	
 	if notChangedPacsCount:
-		RESULTS_MSG += "\n\nSome files already use updated ItemGen data.\n.pac files unmodified: " + str(notChangedPacsCount)
+		RESULTS_MSG += "\n\nSome files already use updated ItemGen data.\nStage .pac files unmodified: " + str(notChangedPacsCount)
 	
 	BrawlAPI.ShowMessage(RESULTS_MSG, SCRIPT_NAME)
 
