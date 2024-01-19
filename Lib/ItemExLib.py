@@ -101,7 +101,7 @@ def nodeListToString(list):
 	return message
 
 # Return a full list of data values in ItmTableGroupNode
-def storeItmFreqInfo(groupNode):
+def getItemFreqTable(groupNode):
 	list = []
 	for child in groupNode.Children:
 		itemEntryData = []
@@ -114,15 +114,11 @@ def storeItmFreqInfo(groupNode):
 	return list
 
 # Main ItemGen update function 
-def updateItmTableGroupNode(groupNode, returnLists=False):
+def updateItmTableGroupNode(groupNode):
 	if groupNode.Id != 10000:
-		return False
+		return
 	
 	itmFreqEntryNodes = []
-	
-	# Store initial node MD5 checksums to determine if any get changed
-	if returnLists:
-		oldItemList = storeItmFreqInfo(groupNode)
 	
 	# Generate list of ItemFreqEntry nodes for common (vBrawl) items
 	for freqNode in groupNode.Children:
@@ -146,9 +142,3 @@ def updateItmTableGroupNode(groupNode, returnLists=False):
 		# Add container variation data
 		if isContainer(itemFreq[0]):
 			freqNode.SubID += getContainerVariation(groupNode.Children)
-			
-	if returnLists:
-		newItemList = storeItmFreqInfo(groupNode)
-		
-		return [oldItemList, newItemList]
-	return True

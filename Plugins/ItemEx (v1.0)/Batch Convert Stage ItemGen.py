@@ -66,11 +66,12 @@ def main():
 		
 		# Loop through ItmTableGroup nodes in current pac
 		for groupNode in BrawlAPI.NodeListOfType[ItmTableGroupNode]():
-			itemLists = updateItmTableGroupNode(groupNode, True)
+			if groupNode.Id != 10000:
+				continue
+			oldItemList.append(getItemFreqTable(groupNode))
+			updateItmTableGroupNode(groupNode)
 			# Populate item data lists
-			if itemLists:
-				oldItemList.append(itemLists[0])
-				newItemList.append(itemLists[1])
+			newItemList.append(getItemFreqTable(groupNode))
 		
 		# If item lists are the same, skip saving file to save time
 		if oldItemList == newItemList:
