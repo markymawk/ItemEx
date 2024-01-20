@@ -70,8 +70,9 @@ def main():
 		
 			oldItemList.append(getItemFreqTable(groupNode))
 			
+			# Set to False to use vBrawl item table
 			updateItmTableGroupNode(groupNode, False)
-					
+			
 			newItemList.append(getItemFreqTable(groupNode))
 			
 			# If item lists are the same, skip saving the file
