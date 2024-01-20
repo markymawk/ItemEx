@@ -125,6 +125,9 @@ def updateItmTableGroupNode(groupNode):
 		if isCommonItem(freqNode.ItemID):
 			itmFreqEntryNodes.append(freqNode)
 	
+	# Save container sub ID value to restore
+	containerVariantID = getContainerVariation(groupNode.Children)
+	
 	# Remove all common ItemFreqEntry nodes
 	for freqNode in itmFreqEntryNodes:
 		freqNode.Remove()
@@ -140,5 +143,5 @@ def updateItmTableGroupNode(groupNode):
 		groupNode.AddChild(freqNode)
 		
 		# Add container variation data
-		if isContainer(itemFreq[0]):
-			freqNode.SubID += getContainerVariation(groupNode.Children)
+		if isContainer(freqNode.ItemID):
+			freqNode.SubID += containerVariantID
