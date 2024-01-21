@@ -21,7 +21,7 @@ FILES_TO_SKIP = [
 def main():
 	# Show starting info prompt
 	START_MSG = "Update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
-	"NOTE: Converted stages may not be compatible with non-ItemEx builds when items are enabled.\n\n" + \
+	"NOTE: Converted stages may fail to spawn certain items, such as containers, in non-ItemEx builds.\n\n" + \
 	"Press OK to continue to folder selection."
 	if not BrawlAPI.ShowOKCancelPrompt(START_MSG, SCRIPT_NAME):
 		return
