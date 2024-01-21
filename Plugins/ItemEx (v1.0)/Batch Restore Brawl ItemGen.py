@@ -98,7 +98,7 @@ def main():
 	"Stage .pac files modified: " + str(changedPacsCount)
 	
 	if notChangedPacsCount:
-		RESULTS_MSG += "\n\nSome files already use this ItemGen data and are unaffected.\nStage .pac files unmodified: " + str(notChangedPacsCount)
+		RESULTS_MSG += "\n\nSome files already use this ItemGen data or were unaffected.\nStage .pac files unmodified: " + str(notChangedPacsCount)
 	
 	BrawlAPI.ShowMessage(RESULTS_MSG, SCRIPT_NAME)
 
