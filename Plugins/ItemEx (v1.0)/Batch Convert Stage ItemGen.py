@@ -12,7 +12,11 @@ from ItemExLib import *
 SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
 ITEMEX_VERSION = "v1.0"
 # Enter file names to skip over, i.e. STGEXAMPLE.pac
-FILES_TO_SKIP = ["STGBELLTOWER.pac"]
+FILES_TO_SKIP = [
+"STGBELLTOWER.pac",
+"STGBELLTOWER_R_PS2_BELLTOWER.pac",
+"STGPOKEFLOATS_L_POKEFLOATS2.pac"
+]
 
 def main():
 	# Show starting info prompt
