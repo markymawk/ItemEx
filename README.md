@@ -19,9 +19,9 @@ To revert ItemGen data back to a vBrawl table, use **Plugins > Batch Restore Bra
 
 ----
 ### About ItemGen compatibility
-In order to spawn any items affected by ItemEx, including containers (crates), Bumper, and Screw Attack, ItemGen data in each stage .pac must be converted accordingly. Using converted ItemGen data in non-ItemEx builds will have the same effect Using incomptatible ItemGen data is not known to cause crashes, but should be still avoided when possible.
+For stages in ItemEx builds, ItemGen data in each stage .pac must be converted in order to spawn any items affected by ItemEx, such as containers (crates), Bumper, and Screw Attack. Likewise, using an ItemEx stage .pac in non-ItemEx builds will have the same effect. Using incompatible ItemGen data is not known to cause crashes, but should be still avoided when possible.
 
-An easy way to determine the format of an ItemGen is to check the ARC ItmGen > Item Generation 0 > Table 0 > Group 0, and count the instances of a container, such as a Barrel. ItemEx tables will use multiple of the same container (3 Barrels, 2 Capsules, etc.) while vBrawl tables use one of each. 
+An easy way to determine the format of an ItemGen is to check the ARC ItmGen > Item Generation 0 > Table 0 > Group 0, and count the instances of any container. ItemEx tables will use multiple of the same container (3 Barrels, 2 Capsules, etc.) while vBrawl tables use one of each. 
 
 ### Credits
 ItemEx by Kapedani, Sammi Husky, KingJigglypuff, DukeItOut, MarioDox, mawwwk, soopercool101
