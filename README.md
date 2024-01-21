@@ -24,4 +24,4 @@ In order to spawn any items affected by ItemEx, including containers (crates), B
 An easy way to determine the format of an ItemGen is to check the ARC ItmGen > Item Generation 0 > Table 0 > Group 0, and count the instances of a container, such as a Barrel. ItemEx tables will use multiple of the same container (3 Barrels, 2 Capsules, etc.) while vBrawl tables use one of each. 
 
 ### Credits
-ItemEx by Kapedani, Sammi Husky, KingJigglypuff, DukeItOut, MarioDox, mawwwk
+ItemEx by Kapedani, Sammi Husky, KingJigglypuff, DukeItOut, MarioDox, mawwwk, soopercool101
