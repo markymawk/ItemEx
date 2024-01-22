@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "0.9.7"
+__version__ = "0.9.8"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
