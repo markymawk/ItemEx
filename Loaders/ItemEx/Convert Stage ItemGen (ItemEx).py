@@ -18,7 +18,7 @@ SCRIPT_NAME = "Convert Stage ItemGen Data " + ITEMEX_VERSION
 OPTION_NAME = "Convert Stage ItemGen (ItemEx " + ITEMEX_VERSION + ")"
 
 START_MSG = "Update stage item generation (ItemGen) data to be compatible with builds using ItemEx " + ITEMEX_VERSION + ".\n\n" + \
-"NOTE: Converted stages may fail to spawn certain items, such as containers, in non-ItemEx builds.\n\n" + \
+"NOTE: Converted stage .pacs may fail to spawn certain items, such as containers, in non-ItemEx builds.\n\n" + \
 "Press OK to continue."
 
 ## Start enable check function
