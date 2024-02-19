@@ -1,5 +1,5 @@
 ﻿__author__ = "Kapedani, mawwwk"
-__version__ = "0.9.7"
+__version__ = "1.0"
 
 # ItemEx lib
 # Conversion function and data library for updating ItemGen nodes
