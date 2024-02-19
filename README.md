@@ -30,4 +30,3 @@ An easy way to determine the format of an ItemGen is to check the ARC ItmGen > I
 * UI: mawwwk
 * Stage scripting: mawwwk, Kapedani
 * BrawlCrate formatting & implementation: soopercool101
-* 
