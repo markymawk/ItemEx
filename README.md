@@ -24,9 +24,10 @@ For stages in ItemEx builds, ItemGen data in each stage .pac must be converted i
 An easy way to determine the format of an ItemGen is to check the ARC ItmGen > Item Generation 0 > Table 0 > Group 0, and count the instances of any container. ItemEx tables will use multiple of the same container (3 Barrels, 2 Capsules, etc.) while vBrawl tables use one of each. 
 
 ### Credits
-Core functionality: Sammi Husky, Kapedani  
-Additional toggles & implementation: Kapedani, DukeItOut, MarioDox  
-EX item development: Kapedani, KingJigglypuff  
-UI: mawwwk  
-Stage scripting: mawwwk, Kapedani  
-BrawlCrate formatting & implementation: soopercool101
+* Core functionality: Sammi Husky, Kapedani
+* Additional toggles & implementation: Kapedani, DukeItOut, MarioDox
+* EX item development: Kapedani, KingJigglypuff
+* UI: mawwwk
+* Stage scripting: mawwwk, Kapedani
+* BrawlCrate formatting & implementation: soopercool101
+* 
