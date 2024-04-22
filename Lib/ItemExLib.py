@@ -1,5 +1,5 @@
 ﻿__author__ = "Kapedani, mawwwk"
-__version__ = "1.0"
+__version__ = "1.1"
 
 # ItemEx lib
 # Conversion function and data library for updating ItemGen nodes
@@ -73,7 +73,8 @@ ITEM_LIST_EX = [
 	(0x43, 5000, 1, 1, 8.0),	# Unira
 	(0x14, 5000, 1, 1, 5.0),	# Dragoon Part
 	(0x2b, 5000, 1, 1, 10.0),	# Blast Box
-	(0x37, 5000, 1, 1, 150.0)	# Smash Ball
+	(0x37, 5000, 1, 1, 150.0),	# Smash Ball
+	(0x55, 0, 1, 1, 10.0)		# -
 ]
 
 # vBrawl table, as used in Battlefield. Don't modify this!
