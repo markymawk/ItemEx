@@ -3,7 +3,7 @@
 BrawlCrate scripts to manage ItemGen (stage item generation) data in stage .pac files for use with the ItemEx codebase.
 
 ## Installation
-*Python 3.11.x or newer recommended. Set the Python install path inside Tools > Settings > BrawlAPI tab.*  
+*BrawlCrate v0.42 or newer recommended. Compatibility with older versions not guaranteed.*  
 
 In BrawlCrate, navigate to Tools > Settings > Updater tab, and click the Manage Subscriptions button.  
 Click Add, then paste the link to this Github repo: https://github.com/markymawk/ItemEx  
