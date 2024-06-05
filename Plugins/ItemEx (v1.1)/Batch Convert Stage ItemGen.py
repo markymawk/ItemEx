@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "1.0"
+__version__ = "1.1"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -9,8 +9,8 @@ from BrawlCrate.UI import *
 from System.IO import *
 from ItemExLib import *
 
-SCRIPT_NAME = "Convert Stage ItemGen Data v1.0"
-ITEMEX_VERSION = "v1.0"
+SCRIPT_NAME = "Convert Stage ItemGen Data v1.1"
+ITEMEX_VERSION = "v1.1"
 # Enter file names to skip over, i.e. STGEXAMPLE.pac
 FILES_TO_SKIP = [
 "STGBELLTOWER.pac",
