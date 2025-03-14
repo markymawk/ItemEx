@@ -42,7 +42,6 @@ def main():
 	progressBar.Begin(0, len(files), progressCounter)
 	
 	# Enable compatibility mode to avoid corrupting older imports
-	isCompatibility = MainForm.Instance.CompatibilityMode
 	MainForm.Instance.CompatibilityMode = True
 	
 	# Loop through pac files
@@ -114,8 +113,8 @@ def main():
 		progressCounter += 1
 		progressBar.Update(progressCounter)
 	
-	# Restore compatibility mode setting
-	MainForm.Instance.CompatibilityMode = isCompatibility
+	# Disable compatibility mode setting
+	MainForm.Instance.CompatibilityMode = False
 	
 	# Results
 	progressBar.Finish()
