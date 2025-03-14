@@ -27,7 +27,7 @@ def EnableCheck_rootARC(sender, event_args):
 	sender.Enabled = (node is not None \
 	and node.Children \
 	and node.FindChild("2") is not None \
-	and BrawlAPI.RootNode.FilePath.endswith(".pac"))
+	and BrawlAPI.RootNode.FilePath.lower().endswith(".pac"))
 
 # Wrapper: ARCWrapper
 def EnableCheck_ItmGenARC(sender, event_args):
@@ -37,7 +37,7 @@ def EnableCheck_ItmGenARC(sender, event_args):
 	and node.FileIndex == 10000 \
 	and node.Children \
 	and "ItmFreqNode" in node.Children[0].NodeType \
-	and BrawlAPI.RootNode.FilePath.endswith(".pac"))
+	and BrawlAPI.RootNode.FilePath.lower().endswith(".pac"))
 
 ## End enable check function
 ## Start loader functions
