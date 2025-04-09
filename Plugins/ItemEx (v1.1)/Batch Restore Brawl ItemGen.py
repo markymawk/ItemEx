@@ -1,5 +1,5 @@
 __author__ = "Kapedani, mawwwk"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 from BrawlCrate.API import BrawlAPI
 from BrawlLib.SSBB.ResourceNodes import *
@@ -13,7 +13,7 @@ from System.IO import * # Directory.GetFiles
 SCRIPT_NAME = "Restore Brawl ItemGen Data"
 
 # Enter file names to skip over, i.e. "STGEXAMPLE.pac"
-FILES_TO_SKIP = []
+FILES_TO_SKIP = ["STGCHARAROLL.pac"]
 
 def main():
 	# Show starting info prompt
@@ -47,8 +47,15 @@ def main():
 	# Loop through pac files
 	for file in files:
 		
+		doSkipFile = False
+		
+		# Check if file name should be skipped (case-insensitive check)
+		for i in FILES_TO_SKIP:
+			if i.lower() == Path.GetFileName(file).lower():
+				doSkipFile = True
+		
 		# Check whether file should be opened
-		if Path.GetFileName(file) in FILES_TO_SKIP or not Path.GetFileName(file).lower().endswith(".pac"):
+		if doSkipFile or not Path.GetFileName(file).lower().endswith(".pac"):
 			continue
 		
 		# Attempt to open file, but skip if unable to
